@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Administradores</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Lista de Administradores</h1>
+        <a href="{{ url_for('add_administrador') }}" class="btn btn-primary mb-2">Agregar Administrador</a>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Rol</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for administrador in administradores %}
+                <tr>
+                    <td>{{ administrador.nombre }}</td>
+                    <td>{{ administrador.apellido }}</td>
+                    <td>{{ administrador.rol }}</td>
+                    <td>{{ administrador.fecha_inicio }}</td>
+                    <td>
+                        <!-- Aquí puedes agregar opciones como editar o eliminar -->
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Lista de Usuarios</h1>
+        <a href="{{ url_for('add') }}" class="btn btn-primary mb-2">Agregar Usuario</a>
+        <a href="{{ url_for('administradores') }}" class="btn btn-secondary mb-2">Administradores</a>
+        <a href="{{ url_for('destinos') }}" class="btn btn-info mb-2">Destinos</a>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.nombre }}</td>
+                    <td>{{ usuario.apellido }}</td>
+                    <td>{{ usuario.correo }}</td>
+                    <td>
+                        <a href="{{ url_for('edit', id_usuario=usuario.id_usuario) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ url_for('delete', id_usuario=usuario.id_usuario) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
