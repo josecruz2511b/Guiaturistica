@@ -25,6 +25,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
+
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM Usuarios WHERE correo = ? AND contraseña = ?', (username, password))
@@ -117,6 +118,46 @@ def add_administrador():
     return render_template('add_administrador.html')
 
 
+@app.route('/edit_administrador/<int:id>', methods=['GET', 'POST'])
+def edit_administrador(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Administradores WHERE id_administrador = ?', (id,))
+    administrador = cursor.fetchone()
+
+    if request.method == 'POST':
+        id_usuario = request.form['id_usuario']
+        rol = request.form['rol']
+        fecha_inicio = request.form['fecha_inicio']
+
+        if not id_usuario or not rol or not fecha_inicio:
+            flash('Todos los campos son obligatorios.', 'error')
+            return redirect(url_for('edit_administrador', id=id))
+
+        cursor.execute('UPDATE Administradores SET id_usuario = ?, rol = ?, fecha_inicio = ? WHERE id_administrador = ?',
+                       (id_usuario, rol, fecha_inicio, id))
+        conn.commit()
+        conn.close()
+
+        flash('Administrador actualizado correctamente', 'success')
+        return redirect(url_for('administradores'))
+
+    conn.close()
+    return render_template('edit_administrador.html', administrador=administrador)
+
+
+@app.route('/delete_administrador/<int:id>', methods=['POST'])
+def delete_administrador(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Administradores WHERE id_admin = ?', (id,))
+    conn.commit()
+    conn.close()
+
+    flash('Administrador eliminado correctamente', 'success')
+    return redirect(url_for('administradores'))
+
+
 @app.route('/destinos')
 def destinos():
     conn = get_db_connection()
@@ -130,20 +171,56 @@ def destinos():
 @app.route('/add_destino', methods=['GET', 'POST'])
 def add_destino():
     if request.method == 'POST':
-        nombre = request.form['nombre']
+        nombre_destino = request.form['nombre_destino']
         descripcion = request.form['descripcion']
-        ubicacion = request.form['ubicacion']
+        ciudad = request.form['ciudad']
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO Destinos (nombre, descripcion, ubicacion) VALUES (?, ?, ?)',
-                       (nombre, descripcion, ubicacion))
+        cursor.execute('INSERT INTO Destinos (nombre_destino, descripcion, ciudad) VALUES (?, ?, ?)',
+                       (nombre_destino, descripcion, ciudad))
         conn.commit()
         conn.close()
 
         flash('Destino agregado correctamente', 'success')
         return redirect(url_for('destinos'))
     return render_template('add_destino.html')
+
+
+@app.route('/edit_destino/<int:id>', methods=['GET', 'POST'])
+def edit_destino(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Destinos WHERE id_destino = ?', (id,))
+    destino = cursor.fetchone()
+
+    if request.method == 'POST':
+        nombre_destino = request.form['nombre_destino']
+        descripcion = request.form['descripcion']
+        ciudad = request.form['ciudad']
+
+        cursor.execute('UPDATE Destinos SET nombre_destino = ?, descripcion = ?, ciudad = ? WHERE id_destino = ?',
+                       (nombre_destino, descripcion, ciudad, id))
+        conn.commit()
+        conn.close()
+
+        flash('Destino actualizado correctamente', 'success')
+        return redirect(url_for('destinos'))
+
+    conn.close()
+    return render_template('edit_destino.html', destino=destino)
+
+
+@app.route('/delete_destino/<int:id>', methods=['POST'])
+def delete_destino(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM Destinos WHERE id_destino = ?', (id,))
+    conn.commit()
+    conn.close()
+
+    flash('Destino eliminado correctamente', 'success')
+    return redirect(url_for('destinos'))
 
 
 

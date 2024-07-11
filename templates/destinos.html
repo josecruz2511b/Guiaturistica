@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Destinos</title>
@@ -22,11 +22,14 @@
             <tbody>
                 {% for destino in destinos %}
                 <tr>
-                    <td>{{ destino.nombre }}</td>
+                    <td>{{ destino.nombre_destino }}</td>
                     <td>{{ destino.descripcion }}</td>
-                    <td>{{ destino.ubicacion }}</td>
+                    <td>{{ destino.ciudad }}</td>
                     <td>
-                        <!-- Aquí puedes agregar opciones como editar o eliminar -->
+                        <a href="{{ url_for('edit_destino', id=destino.id_destino) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ url_for('delete_destino', id=destino.id_destino) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

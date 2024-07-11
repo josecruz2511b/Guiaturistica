@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Destino</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Editar Destino</h1>
+    <form action="{{ url_for('edit_destino', id=destino.id_destino) }}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ destino.nombre_destino }}">
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" class="form-control"
+                      rows="4">{{ destino.descripcion }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion" class="form-control" value="{{ destino.ciudad }}">
+        </div>
+        <button type="submit" class="btn btn-success">Actualizar</button>
+    </form>
+</div>
+</body>
+</html>
